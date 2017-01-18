@@ -7,23 +7,26 @@ public class PlayerController : MonoBehaviour {
 	public float speed; // speed of player movement
 	public GameObject cube;
 	public GameObject selectedCube;
+	public GameObject templateShape;
+
 
 	private Rigidbody playerObj; // player
+	private float zPos;
+	private float zOffset;
 
 	void Start() {
 		playerObj = GetComponent<Rigidbody> ();
+		zOffset = 1.0f;
+		zPos = 0.0f;
 	}
 
 	void FixedUpdate() {
-
-		// movement from Keyboard arrows and Mouse Y axis
-		float moveHorizontal = Input.GetAxis("Horizontal");
-		float moveVertical = Input.GetAxis("Vertical");
-		float moveY = Input.GetAxis("Mouse Y");
-
-		Vector3 movement = new Vector3 (moveHorizontal, moveY/5, moveVertical);
-
-		playerObj.AddForce (movement * speed);
+		if(Input.GetKeyDown(KeyCode.DownArrow)) {
+			zPos -= zOffset;
+		} else if(Input.GetKeyDown(KeyCode.UpArrow)) {
+			zPos += zOffset;
+		}
+		playerObj.transform.position = new Vector3 (Input.mousePosition[0]/100, Input.mousePosition[1]/100, zPos);
 
 	}
 
@@ -32,6 +35,7 @@ public class PlayerController : MonoBehaviour {
 		selectedCube = other.gameObject;
 		if (selectedCube.CompareTag ("Bucket")) {
 			GetComponent<Renderer>().material = selectedCube.GetComponent<Renderer>().material;
+			templateShape = selectedCube;
 		} 
 		else if (selectedCube.CompareTag ("Cube")) {
 			selectedCube.GetComponent<Renderer> ().material = GetComponent<Renderer> ().material;
