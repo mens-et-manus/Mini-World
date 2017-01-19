@@ -24,7 +24,7 @@ public class RemoteControlController : MonoBehaviour
 		templateShape = player.GetComponent<PlayerController>().templateShape;
 
 		if (Input.GetMouseButtonDown(0)) {
-			// create a new cube when press "P" 
+			// create a new cube when click
 			Vector3 coord = new Vector3 ((int)player.transform.position [0], ((int)player.transform.position [1]) + 0.5f, (int)player.transform.position [2]);
 			GameObject newObj = Instantiate (templateShape, coord, new Quaternion (0, 0, 0, 0));
 			print (newObj.tag);
@@ -32,7 +32,7 @@ public class RemoteControlController : MonoBehaviour
 			newObj.transform.localScale = templateShape.transform.lossyScale;
 
 		} else if (Input.GetMouseButtonDown(1) && selectedCube.CompareTag ("Cube")) {
-			// delete the cube when press "O" 
+			// delete the cube when right click
 			selectedCube.SetActive (false);
 		} else if (Input.GetKeyDown (KeyCode.RightArrow) && selectedCube.CompareTag ("Cube")) {
 			Vector3 rot = selectedCube.transform.localRotation.eulerAngles;

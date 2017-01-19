@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class KinectRemoteControlController : MonoBehaviour
+public class RemoteControlControllerKinect : MonoBehaviour
 {
 	public GameObject cube;
 	public float thresholdTop;
@@ -17,12 +17,12 @@ public class KinectRemoteControlController : MonoBehaviour
 	void Start() {
 		// get Kinect scripts
 		followJoint = GetComponent<FollowJoint>();
-		selectedCube = player.GetComponent<KinectPlayerController>().selectedCube;
+		selectedCube = player.GetComponent<PlayerControllerKinect>().selectedCube;
 	}
 
 	void FixedUpdate(){
 
-		selectedCube = player.GetComponent<KinectPlayerController>().selectedCube;
+		selectedCube = player.GetComponent<PlayerControllerKinect>().selectedCube;
 
 		// read position from Right hand
 		transform.position = followJoint.ReadPosition;
@@ -34,7 +34,7 @@ public class KinectRemoteControlController : MonoBehaviour
 			newCube.GetComponent<Renderer> ().material = player.GetComponent<Renderer> ().material;
 		} else if( transform.position[1] <= thresholdBottom && selectedCube.gameObject.CompareTag("Cube") ){
 			// Left hand is low -> delete the cube
-			player.GetComponent<KinectPlayerController>().selectedCube = null; 
+			player.GetComponent<PlayerControllerKinect> ().selectedCube = null; 
 			selectedCube.gameObject.SetActive (false);
 		}
 
