@@ -6,7 +6,8 @@ public class KinectPlayerController : MonoBehaviour
 {
 	private FollowJoint followJoint; // Kinect Script
 	public GameObject selectedCube;
-    
+	public GameObject templateShape;
+
     void Start() {
 		// get Kinect scripts
         followJoint = GetComponent<FollowJoint>();
@@ -21,8 +22,9 @@ public class KinectPlayerController : MonoBehaviour
 
 		selectedCube = other.gameObject;
         if (other.gameObject.CompareTag("Bucket")){
-			// collect the material
-            GetComponent<Renderer>().material = other.gameObject.GetComponent<Renderer>().material;
+			// collect the material and shape
+			GetComponent<Renderer>().material = selectedCube.GetComponent<Renderer>().material;
+			templateShape = selectedCube;
         }
         else if (other.gameObject.CompareTag("Cube")){
 			// assign the material to a cube
