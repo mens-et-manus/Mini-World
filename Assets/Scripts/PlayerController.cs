@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour {
 		} else if (Input.GetKeyDown(KeyCode.UpArrow)) {
 			zPos += zOffset;
 		}
-		playerObj.transform.position = new Vector3 (Input.mousePosition[0]/100, Input.mousePosition[1]/100, zPos);
+		playerObj.transform.position = new Vector3 (Input.mousePosition[0]/90, Input.mousePosition[1]/90, zPos);
 
 	}
 
