@@ -21,9 +21,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		if(Input.GetKeyDown(KeyCode.DownArrow)) {
+		if (Input.GetKeyDown(KeyCode.DownArrow)) {
 			zPos -= zOffset;
-		} else if(Input.GetKeyDown(KeyCode.UpArrow)) {
+		} else if (Input.GetKeyDown(KeyCode.UpArrow)) {
 			zPos += zOffset;
 		}
 		playerObj.transform.position = new Vector3 (Input.mousePosition[0]/100, Input.mousePosition[1]/100, zPos);
