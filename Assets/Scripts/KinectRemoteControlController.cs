@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System;
 
 public class KinectRemoteControlController : MonoBehaviour
 {
@@ -28,7 +29,14 @@ public class KinectRemoteControlController : MonoBehaviour
      *        false otherwise
      */
     bool availableSpace( Vector3 coord) {
-        return !Physics.CheckSphere(coord, 0.3f);
+        float scaleFactor = selectedShape.transform.localScale[0];
+        float r = 0.3f;
+        if (scaleFactor < 0.01)
+        {
+            r = 3.0f;
+        }
+        print(r);
+        return !Physics.CheckSphere(coord, r);
     }
 
     /**
@@ -54,9 +62,14 @@ public class KinectRemoteControlController : MonoBehaviour
         selectedShape = player.GetComponent<KinectPlayerController>().selectedShape;
 		// read position from Right hand
 		transform.position = followJoint.GeneratedPosition;
+        Vector3 rightShoulder = GameObject.Find("Empty Right Shoulder").GetComponent<FollowJoint>().GeneratedPosition;
+        Vector3 head = GameObject.Find("Empty Head").GetComponent<FollowJoint>().GeneratedPosition;
+        Vector3 rightHand = transform.position;
 
+        float errorFromFaceSize = 1.5f;
+        float error = 3f;
 
-        if (transform.position[1] >= thresholdTop) {
+        if (transform.position[1] >= thresholdTop && !selectedShape.CompareTag("Bucket") && ( Math.Abs(rightHand[0] - head[0]) > error || Math.Abs(rightHand[2] - head[2]) > error) ) {
 
             Vector3 placingCoord = getPlacingCoordinate();
 
@@ -67,20 +80,32 @@ public class KinectRemoteControlController : MonoBehaviour
                 newCube.transform.localScale = selectedShape.transform.lossyScale * 3;
             }
            
-        } else if ( selectedCube && selectedCube.gameObject.CompareTag("Clone Object")) {
-            if (transform.position[1] <= thresholdBottom){
-                // Left hand is low -> delete the cube
+        } else if ( selectedCube && selectedCube.gameObject.CompareTag("Clone Object"))
+        {
+            //print("delete");
+            if (Math.Abs(rightHand[0] - head[0]) <= error && Math.Abs(rightHand[2] - head[2]) <= error && rightHand[1] > head[1] + errorFromFaceSize)
+            {
+                // print("Scale up");
+                selectedCube.transform.localScale = selectedCube.transform.localScale * 1.03f;
+            }
+            else if (Math.Abs(rightHand[0] - head[0]) <= error && Math.Abs(rightHand[2] - head[2]) <= error && rightHand[1] + errorFromFaceSize < head[1])
+            {
+                //print("Scale down");
+                selectedCube.transform.localScale = selectedCube.transform.localScale * 0.99f;
+            }
+            else if (transform.position[1] <= thresholdBottom) {
+                // (right) hand is low -> delete the cube
                 player.GetComponent<KinectPlayerController>().selectedCube = null;
                 selectedCube.gameObject.SetActive(false);
-            } else if (transform.position[0] <= thresholdLeft ) {
-                //rotate left
+            } else if (rightShoulder[0] - transform.position[0] >= thresholdLeft) {
+                // wipe (right) hand from left to right to rotate obj CW
                 Vector3 rot = selectedCube.transform.localRotation.eulerAngles;
                 selectedCube.transform.rotation = Quaternion.Euler(rot.x, rot.y - 1.0f, 0);
-            } else if (transform.position[0] >= thresholdRight ) {
-                //rotate right
+            } else if (transform.position[0] - rightShoulder[0] >= thresholdRight) {
+                // wipe (right) hand from right to left to rotate obj CW
                 Vector3 rot = selectedCube.transform.localRotation.eulerAngles;
                 selectedCube.transform.rotation = Quaternion.Euler(rot.x, rot.y + 1.0f, 0);
-            }
+            } 
         }
 
     }

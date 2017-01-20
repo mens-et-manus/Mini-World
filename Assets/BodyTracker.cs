@@ -8,6 +8,7 @@ public class BodyTracker : MonoBehaviour {
     public Vector3 rightHand;
     public Vector3 rightShoulder;
     public Vector3 leftShoulder;
+    public Vector3 head;
     // Use this for initialization
 
     void fetchJointPositions() {
@@ -15,6 +16,7 @@ public class BodyTracker : MonoBehaviour {
         rightHand = GameObject.Find("RemoteControl").GetComponent<KinectRemoteControlController>().GetComponent<FollowJoint>().GeneratedPosition;
         rightShoulder = GameObject.Find("Empty Right Shoulder").GetComponent<FollowJoint>().GeneratedPosition;
         leftShoulder = GameObject.Find("Empty Left Shoulder").GetComponent<FollowJoint>().GeneratedPosition;
+        head = GameObject.Find("Empty Head").GetComponent<FollowJoint>().GeneratedPosition;
     }
 
     void Start () {

@@ -28,14 +28,14 @@ public class KinectPlayerController : MonoBehaviour
     void OnTriggerEnter(Collider other) {
 
         //selectedCube = other.gameObject;
-        if (other.gameObject.CompareTag("Bucket") || other.gameObject.CompareTag("Ground Template Object"))
-        {
+        if (other.gameObject.CompareTag("Bucket") || other.gameObject.CompareTag("Ground Template Object")) {
             // collect the material and shape
+            print("select");
             selectedShape = other.gameObject;
 			GetComponent<Renderer>().material = selectedShape.GetComponent<Renderer>().material;
 			
         }
-        else if (other.gameObject.CompareTag("Clone Object")){
+        else if (other.gameObject.CompareTag("Clone Object") && selectedShape.CompareTag("Bucket")) {
             // assign the material to a cube
             selectedCube = other.gameObject;
             other.gameObject.GetComponent<Renderer>().material = GetComponent<Renderer>().material;

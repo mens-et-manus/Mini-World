@@ -38,7 +38,8 @@ public class KinectCameraController : MonoBehaviour
     void Update()
     {
 
-        float errorOffset = 0.5f;
+        float bodyShoulderOffset = 0.7f;
+        float zoomYOffset = 0.5f;
         transform.position = player.transform.position + offset;
         leftHand = GetComponent<BodyTracker>().leftHand;
         rightHand = GetComponent<BodyTracker>().rightHand;
@@ -51,23 +52,23 @@ public class KinectCameraController : MonoBehaviour
 
         Vector3 rot = transform.localRotation.eulerAngles;
 
-        if ( Math.Abs(leftShoulder[0] - rightShoulder[0]) <= rotationXDiffShouldersError && leftShoulder[2] >= rightShoulder[2] + errorOffset)
+        if ( Math.Abs(leftShoulder[0] - rightShoulder[0]) <= rotationXDiffShouldersError && leftShoulder[2] >= rightShoulder[2] + bodyShoulderOffset)
         {
             // turn body to the left to rotate camera CW
             transform.rotation = Quaternion.Euler(rot.x, rot.y - rotationOffset, 0);
         }
-        else if (Math.Abs(leftShoulder[0] - rightShoulder[0]) <= rotationXDiffShouldersError && rightShoulder[2] >= leftShoulder[2] + errorOffset)
+        else if (Math.Abs(leftShoulder[0] - rightShoulder[0]) <= rotationXDiffShouldersError && rightShoulder[2] >= leftShoulder[2] + bodyShoulderOffset)
         {
             // turn body to the right rotate camera CCW
             transform.localRotation = Quaternion.Euler(rot.x, rot.y + rotationOffset, 0);
         }
-        else if (rightShoulder[2] - rightHand[2] >= 0 && rightShoulder[2] - rightHand[2] >= zoomInZDiffThreshold)
+        else if (rightShoulder[2] - rightHand[2] >= 0 && Math.Abs(rightShoulder[0] - rightHand[0]) <= zoomYOffset && rightShoulder[2] - rightHand[2] >= zoomInZDiffThreshold)
         {
             // bring right hand to front to zoom in
             offset = offset * (0.97f);
             transform.position = player.transform.position + offset;
         }
-        else if (rightHand[2] - rightShoulder[2] >= 0 && rightHand[2] - rightShoulder[2] >= zoomOutZDiffThreshold)
+        else if (rightHand[2] - rightShoulder[2] >= 0 && Math.Abs(rightShoulder[1] - rightHand[1]) <= zoomYOffset && rightHand[2] - rightShoulder[2] >= zoomOutZDiffThreshold)
         {
             // bring right hand to back (behind right shoulder) to zoom out
             offset = offset * (1.03f);
