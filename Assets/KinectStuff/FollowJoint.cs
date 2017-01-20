@@ -12,6 +12,7 @@ public class FollowJoint : MonoBehaviour {
     public bool ConvertWorldspaceToCanvas = false;
     public bool ShowMouse = true;
     public Vector3 ReadPosition;
+    public Vector3 GeneratedPosition;
     private Vector3[] vectors;
     private Vector3 sum;
     private Vector3 average;
@@ -46,10 +47,10 @@ public class FollowJoint : MonoBehaviour {
 
         if (ConvertWorldspaceToCanvas)
         {
-            transform.position = Camera.main.WorldToScreenPoint(AverageVectors(ReadPosition));
+            GeneratedPosition = Camera.main.WorldToScreenPoint(AverageVectors(ReadPosition));
         }
         else {
-            transform.position = AverageVectors(ReadPosition);
+            GeneratedPosition = AverageVectors(ReadPosition);
         }
 	}
 
