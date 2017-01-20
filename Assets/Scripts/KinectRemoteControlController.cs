@@ -31,11 +31,9 @@ public class KinectRemoteControlController : MonoBehaviour
     bool availableSpace( Vector3 coord) {
         float scaleFactor = selectedShape.transform.localScale[0];
         float r = 0.3f;
-        if (scaleFactor < 0.01)
-        {
+        if (scaleFactor < 0.01) {
             r = 1.5f;
         }
-        print(r);
         return !Physics.CheckSphere(coord, r);
     }
 
@@ -85,18 +83,15 @@ public class KinectRemoteControlController : MonoBehaviour
         {
             if (Math.Abs(rightHand[0] - head[0]) <= error && Math.Abs(rightHand[2] - head[2]) <= error && rightHand[1] > head[1] + errorFromFaceSize)
             {
-                // print("Scale up");
                 selectedCube.transform.localScale = selectedCube.transform.localScale * 1.03f;
             }
             else if (Math.Abs(rightHand[0] - head[0]) <= error && Math.Abs(rightHand[2] - head[2]) <= error && rightHand[1] + errorFromFaceSize < head[1])
             {
-                //print("Scale down");
                 selectedCube.transform.localScale = selectedCube.transform.localScale * 0.99f;
             }
             else if (transform.position[1] <= thresholdBottom) {
                 print("delete");
                 // (right) hand is low -> delete the cube
-                //Destroy(selectedCube);
                 player.GetComponent<KinectPlayerController>().selectedCube = null;
                 selectedCube.gameObject.SetActive(false);
             } else if (rightShoulder[0] - transform.position[0] >= thresholdLeft) {

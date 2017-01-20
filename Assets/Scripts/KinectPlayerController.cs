@@ -26,8 +26,7 @@ public class KinectPlayerController : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
-
-        //selectedCube = other.gameObject;
+        
         if (other.gameObject.CompareTag("Bucket") || other.gameObject.CompareTag("Ground Template Object")) {
             // collect the material and shape
             print("select");
