@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Start() {
 		playerObj = GetComponent<Rigidbody> ();
-		zOffset = 1.0f;
+        zOffset = 1.0f;
 		zPos = 0.0f;
 	}
 
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour {
 			GetComponent<Renderer>().material = selectedCube.GetComponent<Renderer>().material;
 			templateShape = selectedCube;
 		} 
-		else if (selectedCube.CompareTag ("Cube")) {
+		else if (selectedCube.CompareTag ("Clone Object")) {
 			selectedCube.GetComponent<Renderer> ().material = GetComponent<Renderer> ().material;
 		} 
 	}
