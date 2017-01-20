@@ -35,10 +35,13 @@ public class KinectPlayerController : MonoBehaviour
 			GetComponent<Renderer>().material = selectedShape.GetComponent<Renderer>().material;
 			
         }
-        else if (other.gameObject.CompareTag("Clone Object") && selectedShape.CompareTag("Bucket")) {
+        else if (other.gameObject.CompareTag("Clone Object") ) {
             // assign the material to a cube
             selectedCube = other.gameObject;
-            other.gameObject.GetComponent<Renderer>().material = GetComponent<Renderer>().material;
+            if(selectedShape.CompareTag("Bucket")) {
+                other.gameObject.GetComponent<Renderer>().material = GetComponent<Renderer>().material;
+            }
+            
         }
         
 

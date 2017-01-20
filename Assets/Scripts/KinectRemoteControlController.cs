@@ -33,7 +33,7 @@ public class KinectRemoteControlController : MonoBehaviour
         float r = 0.3f;
         if (scaleFactor < 0.01)
         {
-            r = 3.0f;
+            r = 1.5f;
         }
         print(r);
         return !Physics.CheckSphere(coord, r);
@@ -67,7 +67,7 @@ public class KinectRemoteControlController : MonoBehaviour
         Vector3 rightHand = transform.position;
 
         float errorFromFaceSize = 1.5f;
-        float error = 3f;
+        float error = 2f;
 
         if (transform.position[1] >= thresholdTop && !selectedShape.CompareTag("Bucket") && ( Math.Abs(rightHand[0] - head[0]) > error || Math.Abs(rightHand[2] - head[2]) > error) ) {
 
@@ -78,11 +78,11 @@ public class KinectRemoteControlController : MonoBehaviour
                 GameObject newCube = Instantiate(selectedShape, placingCoord, new Quaternion(0, 0, 0, 0));
                 newCube.tag = "Clone Object";
                 newCube.transform.localScale = selectedShape.transform.lossyScale * 3;
+                newCube.transform.rotation = selectedShape.transform.rotation;
             }
            
         } else if ( selectedCube && selectedCube.gameObject.CompareTag("Clone Object"))
         {
-            //print("delete");
             if (Math.Abs(rightHand[0] - head[0]) <= error && Math.Abs(rightHand[2] - head[2]) <= error && rightHand[1] > head[1] + errorFromFaceSize)
             {
                 // print("Scale up");
@@ -94,7 +94,9 @@ public class KinectRemoteControlController : MonoBehaviour
                 selectedCube.transform.localScale = selectedCube.transform.localScale * 0.99f;
             }
             else if (transform.position[1] <= thresholdBottom) {
+                print("delete");
                 // (right) hand is low -> delete the cube
+                //Destroy(selectedCube);
                 player.GetComponent<KinectPlayerController>().selectedCube = null;
                 selectedCube.gameObject.SetActive(false);
             } else if (rightShoulder[0] - transform.position[0] >= thresholdLeft) {
